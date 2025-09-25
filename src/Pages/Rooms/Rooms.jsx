@@ -1,11 +1,28 @@
 import "./Rooms.css"
 import UserCard from "../../Components/WaitingRoom/UserCard"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { data } from "react-router-dom"
+import axios from "axios"
 
 export default function Rooms(){
     const [username, setUsername] = useState("")
     const [UserCards, setUserCards] = useState([])
+    const socketRef = useRef()
+
+    function get_users(){
+        axios.get("http://localhost:8000/conn_router/get_users")
+        .then((msg)=>{
+            const clients = msg.data.clients
+            const filClients = clients.filter((payload)=>(
+                payload.data.client !== username
+            )
+        )
+            filClients.map((payload,i)=>{
+                setUserCards(prev => [...prev,payload])
+            })
+        })
+        .catch((err)=>{console.log(err)})
+    }
     
 
     useEffect(() => {
@@ -14,27 +31,46 @@ export default function Rooms(){
             if (name) setUsername(name)
             return
         }
-
-        const socket = new WebSocket("ws://localhost:8000/conn_router/ws/testRoom/" + username)
-        socket.onerror = (err) => alert(err)
-        socket.onmessage = (event) =>{ 
+        // makes connection 
+        socketRef.current = new WebSocket("ws://localhost:8000/conn_router/ws/testRoom/" + username)
+        // gets the players data who joined before the client joined
+        socketRef.current.onopen = () => {get_users()}
+        socketRef.current.onerror = (err) => alert(err)
+        socketRef.current.onmessage = (event) =>{
             const data = JSON.parse(event.data)
-            setUserCards(prev => [...prev, event.data])}
-
-        return () => socket.close()
+            
+            if (data.action === "player.log") {
+                setUserCards(prev => [...prev, data])}
+            else{
+                console.log(data)
+            }
+        }
+        
+        return () => {
+            socketRef.current.close()
+            console.log("socket closed")
+        }
     }, [username])
 
+    const handle_click = () =>{
+        console.log("button clicked")
+        if (socketRef.current.readyState !== WebSocket.OPEN){
+            console.log("connection closed")
+            return}
 
+        socketRef.current.send(JSON.stringify({
+            action: "game.start",
+            data: {player_type: "host"}
+            }))
+    }
     
-   
  
-
     return(
         <div className="waiting-container" style={{border:"solid blue 5px",minHeight:"200px"}}>
             {UserCards.map((data, i)=>(
                 <UserCard  key={i} payload={data} />
             ))}
-                 {UserCards}
+            <button onClick={handle_click}>Start Game</button>
         </div>
     )
 }
