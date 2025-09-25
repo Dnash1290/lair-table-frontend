@@ -1,12 +1,14 @@
 import "./Rooms.css"
 import UserCard from "../../Components/WaitingRoom/UserCard"
 import { useEffect, useRef, useState } from "react"
-import { data } from "react-router-dom"
+import CountDown from "../../Components/CountWatch/CountDown"
 import axios from "axios"
+
 
 export default function Rooms(){
     const [username, setUsername] = useState("")
     const [UserCards, setUserCards] = useState([])
+    const [Count, SetCount] = useState()
     const socketRef = useRef()
 
     function get_users(){
@@ -41,6 +43,10 @@ export default function Rooms(){
             
             if (data.action === "player.log") {
                 setUserCards(prev => [...prev, data])}
+            else if(data.action === "game.starting"){
+             
+                SetCount(data.data.game_status.end_time)
+            }
             else{
                 console.log(data)
             }
@@ -70,6 +76,7 @@ export default function Rooms(){
             {UserCards.map((data, i)=>(
                 <UserCard  key={i} payload={data} />
             ))}
+            {Count ? <CountDown endTime={Count} />: ""}
             <button onClick={handle_click}>Start Game</button>
         </div>
     )
