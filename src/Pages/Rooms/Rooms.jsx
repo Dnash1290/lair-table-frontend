@@ -1,15 +1,15 @@
 import "./Rooms.css"
 import UserCard from "../../Components/WaitingRoom/UserCard"
-import { useEffect, useRef, useState } from "react"
+import { use, useCallback, useEffect, useRef, useState } from "react"
 import CountDown from "../../Components/CountWatch/CountDown"
 import axios from "axios"
-
+import { useAppContext } from "../../WebSocket/WsContext"
 
 export default function Rooms(){
-    const [username, setUsername] = useState("")
+    const {username, setUsername, connect, IsConnected} = useAppContext()
     const [UserCards, setUserCards] = useState([])
-    const [Count, SetCount] = useState()
-    const socketRef = useRef()
+    const [Count, setCount] = useState(null)
+    console.log(username, "nigges")
 
     function get_users(){
         axios.get("http://localhost:8000/conn_router/get_users")
@@ -23,35 +23,21 @@ export default function Rooms(){
                 setUserCards(prev => [...prev,payload])
             })
         })
-        .catch((err)=>{console.log(err)})
+       .catch((err)=>{console.log(err)})
     }
     
 
     useEffect(() => {
+        console.log("this run")
         if (!username) {
             const name = prompt("enter your username:")
-            if (name) setUsername(name)
+            if (name) {
+                setUsername(name)
+                connect(name, "testRoom")
+            }
             return
         }
-        // makes connection 
-        socketRef.current = new WebSocket("ws://localhost:8000/conn_router/ws/testRoom/" + username)
-        // gets the players data who joined before the client joined
-        socketRef.current.onopen = () => {get_users()}
-        socketRef.current.onerror = (err) => alert(err)
-        socketRef.current.onmessage = (event) =>{
-            const data = JSON.parse(event.data)
-            
-            if (data.action === "player.log") {
-                setUserCards(prev => [...prev, data])}
-            else if(data.action === "game.starting"){
-             
-                SetCount(data.data.game_status.end_time)
-            }
-            else{
-                console.log(data)
-            }
-        }
-        
+
         return () => {
             socketRef.current.close()
             console.log("socket closed")
@@ -73,6 +59,11 @@ export default function Rooms(){
  
     return(
         <div className="waiting-container" style={{border:"solid blue 5px",minHeight:"200px"}}>
+            
+            <div style={{height:"20px", 
+                backgroundColor: IsConnected ? "green": "red"}}>
+            </div>
+            {username}
             {UserCards.map((data, i)=>(
                 <UserCard  key={i} payload={data} />
             ))}
