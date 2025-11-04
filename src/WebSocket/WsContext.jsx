@@ -45,11 +45,10 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
 
           const message = JSON.parse(event.data)
           const {action, data} = message
-          const handle = handles[action]
+          console.log(data) /// prints like object
 
-          if (handles[action]) { handles[action](data) }
+          if (handles[action]) {handles[action](data) }
           else {console.log("invalid action", action)}
-          console.log(action, "was executed")
 
         } catch (error) {
 
@@ -70,6 +69,15 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
       console.log("connection failed handshake",error)
     }
    })
+
+  const AddPlayerCards = useCallback((data) => {
+    console.log(data.clients, "array??")
+    data.clients.forEach((clientData) => {
+      if (username === clientData.client.username) return; // skip this iteration
+      setPlayers(prev => [...prev, clientData.client]);
+    });
+        
+  })
 
   const sendMessage = useCallback((action, data = {}) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -95,6 +103,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     gameState,
     logs,
     username,
+    AddPlayerCards,
     setUsername,
     sendMessage,
     startGame,
