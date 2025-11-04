@@ -1,0 +1,13 @@
+.waiting-room-user{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--usercard-color-3);
+    padding: 3px 12px;
+    margin-bottom: 6px;
+    width: 500px;
+    border-radius: 8px;
+
+    h2 , p{margin: 0;}
+
+}

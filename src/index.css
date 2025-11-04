@@ -7,7 +7,28 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #700e0e;
+  background-color: var(--background-purple);
+
+  
+  /* Background */
+  --background-purple: rgba(128, 0, 128, 1);
+
+  /* User Card Colors */
+  --usercard-color-1: rgba(255, 165, 0, 1);    /* Orange */
+  --usercard-color-2: rgba(0, 255, 255, 1);    /* Cyan */
+  --usercard-color-3: rgba(255, 192, 203, 1);  /* Pink */
+  --usercard-color-4: rgba(0, 128, 0, 1);      /* Green */
+  --usercard-color-5: rgba(255, 255, 0, 1);    /* Yellow */
+  --usercard-color-6: rgba(0, 191, 255, 1);    /* Deep Sky Blue */
+
+  /* General UI Elements */
+  --button-color: rgba(75, 0, 130, 1);         /* Indigo */
+  --button-hover-color: rgba(138, 43, 226, 1); /* BlueViolet */
+  --box-color: rgba(147, 112, 219, 1);         /* Medium Purple */
+  --highlight-color: rgba(255, 105, 180, 1);   /* HotPink */
+  --text-color: rgba(255, 255, 255, 1);        /* White */
+
+
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

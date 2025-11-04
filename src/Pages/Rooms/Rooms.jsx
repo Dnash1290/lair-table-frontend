@@ -59,12 +59,26 @@ export default function Rooms(){
             <div style={{height:"20px", 
                 backgroundColor: isConnected ? "green": "red"}}>
             </div>
-            {username} {JSON.stringify(players)}
-            {players.map((data, i)=>(
-                <UserCard  key={i} payload={data} />
-            ))}
-            {Count ? <CountDown endTime={Count} />: ""}
-            <button >Start Game</button>
+            <div className="players-waiting-container" style={{
+                width:"fit-content", margin: "auto", padding: "4px 12px",
+                backgroundColor:"var(--box-color)", borderRadius: "8px"
+            }}>
+                <div className="room-details">
+                    <div className="room-details-flex" style={{
+                        display:"flex", justifyContent:"space-between", alignItems:"center"
+                    }}>
+                        <h1>Party Name</h1>
+                        <h3>1/3</h3>
+                        <h3>Room Id</h3>
+                    </div>
+                    {players.map((data, i)=>(
+                        <UserCard  key={i} payload={data} />
+                    ))}
+                    {Count ? <CountDown endTime={Count} />: ""}
+                    <button >Start Game</button>
+                </div>
+            </div>
+
         </div>
     )
 }
