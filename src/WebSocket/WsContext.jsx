@@ -10,10 +10,12 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
 
+  // room
+
   // player 
   const [username, setUsername] = useState(null);
   
-  // Game state
+  // Game stateg
   const [players, setPlayers] = useState([]);
   const [votes, setVotes] = useState({});
   const [hints, setHints] = useState([]);

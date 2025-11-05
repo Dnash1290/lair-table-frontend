@@ -3,7 +3,9 @@ import UserCard from "../../Components/WaitingRoom/UserCard"
 import { use, useCallback, useEffect, useRef, useState } from "react"
 import CountDown from "../../Components/CountWatch/CountDown"
 import axios from "axios"
+import leaveLogo from "../../assets/icons/leaveRoom.svg"
 import { useAppContext } from "../../WebSocket/WsContext"
+import { Link } from "react-router-dom"
 
 export default function Rooms(){
     const {
@@ -13,6 +15,7 @@ export default function Rooms(){
 
     const [Count, setCount] = useState(null)
     const GotPlayers = useRef(false)
+    const tempRoom = "testRoom"
 
     function get_users(){
         console.log("ran get users function")
@@ -29,7 +32,7 @@ export default function Rooms(){
             const name = prompt("enter your username:")
             if (name) {
                 setUsername(name)
-                connect(name, "testRoom")// wait till this 
+                connect(name, tempRoom)// wait till this 
             }
         }
 
@@ -56,26 +59,24 @@ export default function Rooms(){
     return(
         <div className="waiting-container" style={{border:"solid blue 5px",minHeight:"200px"}}>
             
-            <div style={{height:"20px", 
+            <div style={{height:"20px", padding:"4px 12px",
                 backgroundColor: isConnected ? "green": "red"}}>
+                {isConnected ? "connected":"disconnected"}
             </div>
-            <div className="players-waiting-container" style={{
-                width:"fit-content", margin: "auto", padding: "4px 12px",
-                backgroundColor:"var(--box-color)", borderRadius: "8px"
-            }}>
+            <div className="players-waiting-container">
                 <div className="room-details">
-                    <div className="room-details-flex" style={{
-                        display:"flex", justifyContent:"space-between", alignItems:"center"
-                    }}>
-                        <h1>Party Name</h1>
-                        <h3>1/3</h3>
-                        <h3>Room Id</h3>
+                    <div className="room-details-flex">
+                        <h1>{tempRoom}</h1>
+                        <h3>{players.length ? players.length : players.lenght}/6</h3>
+                        <Link to={{pathname:"/"}}><img src={leaveLogo} /></Link>
                     </div>
                     {players.map((data, i)=>(
                         <UserCard  key={i} payload={data} />
                     ))}
                     {Count ? <CountDown endTime={Count} />: ""}
                     <button >Start Game</button>
+
+                    
                 </div>
             </div>
 

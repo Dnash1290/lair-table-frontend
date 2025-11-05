@@ -1,0 +1,51 @@
+.waiting-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+    transform: translateY(-10%);
+    height: 100vh;
+}
+
+
+.players-waiting-container{
+    width: 500px;
+    padding: 4px 32px;
+    background-color: var(--box-color);
+    border-radius: 8px;
+
+}
+
+.players-waiting-container .room-details{
+
+    .room-details-flex{
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+
+        a{
+            display: flex;
+            justify-content: flex-end; /* pushes img to the right */
+            align-items: center;       /* optional, centers vertically */
+        }
+    }
+
+
+    button{
+        display: block;
+        color: white;
+        padding: 12px;
+        width: 100%;
+        margin-bottom: 32px;
+
+        background-color: var(--background-purple);
+        border-radius: 8px;
+        border: none;
+    }
+
+    button:hover{
+        transition: 0.2s;
+        background-color: var(--highlight-color);
+    }
+}
