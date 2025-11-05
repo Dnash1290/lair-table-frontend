@@ -5,17 +5,19 @@ import CountDown from "../../Components/CountWatch/CountDown"
 import axios from "axios"
 import leaveLogo from "../../assets/icons/leaveRoom.svg"
 import { useAppContext } from "../../WebSocket/WsContext"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function Rooms(){
     const {
         username, setUsername, connect, isConnected,
-        players, AddPlayerCards
+        players, AddPlayerCards, IsHost
     } = useAppContext()
 
+    const [Error, setError] = useState("")
     const [Count, setCount] = useState(null)
     const GotPlayers = useRef(false)
     const tempRoom = "testRoom"
+    const Navigate = useNavigate()
 
     function get_users(){
         console.log("ran get users function")
@@ -55,6 +57,31 @@ export default function Rooms(){
     
     }, [players])
 
+    useEffect(()=>{
+        if (!Error) return
+
+        const errorTimer = setTimeout(()=>{
+            setError("")
+        }, 3000)
+
+        return () => clearTimeout(errorTimer)
+    },[Error])
+
+    function start_game(){
+        if (!players[0].IsHost) {
+            console.log(username)
+            setError("vroo you are NOT the host vrooo, sob")
+            return
+        }
+
+        if (players.length <= 3){
+            setError("need more then 3 players to start the game")
+            return
+        }
+
+        
+    }
+
 
     return(
         <div className="waiting-container" style={{border:"solid blue 5px",minHeight:"200px"}}>
@@ -67,19 +94,23 @@ export default function Rooms(){
                 <div className="room-details">
                     <div className="room-details-flex">
                         <h1>{tempRoom}</h1>
-                        <h3>{players.length ? players.length : players.lenght}/6</h3>
+                        <h3>{players.length ? players.length : 0}/6</h3>
                         <Link to={{pathname:"/"}}><img src={leaveLogo} /></Link>
                     </div>
                     {players.map((data, i)=>(
                         <UserCard  key={i} payload={data} />
                     ))}
                     {Count ? <CountDown endTime={Count} />: ""}
-                    <button >Start Game</button>
-
-                    
+                    <button onClick={start_game}>Start Game</button>
                 </div>
             </div>
-
+            <div style={{
+                transition: "opacity 0.4s ease", background:"red",
+                borderRadius: "8px", marginTop:"8px", opacity:Error ? 1: 0,
+                height: "24px" ,padding: "4px 12px  "
+            }}>
+                {Error}
+            </div>
         </div>
     )
 }

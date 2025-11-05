@@ -75,7 +75,9 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   const AddPlayerCards = useCallback((data) => {
     console.log(data.clients, "array??")
     data.clients.forEach((clientData) => {
-      if (username === clientData.client.username) return; // skip this iteration
+      if (username === clientData.client.username) {
+        return
+      } 
       setPlayers(prev => [...prev, clientData.client]);
     });
         
