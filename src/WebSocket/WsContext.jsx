@@ -29,7 +29,9 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   const messageHandler = 0
 
   const connect = useCallback((clientId, roomId)=>{
-    const handles = messageHandlers({setLogs, setPlayers, setVotes, setHints, setGameState})
+    const handles = messageHandlers({
+      setLogs, setPlayers, setVotes, setHints, setGameState, roomId
+    })
     if (wsRef.current?.readyState == WebSocket.OPEN) {return}
     
     try {
@@ -85,7 +87,8 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
 
   const sendMessage = useCallback((action, data = {}) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
-      const message = { action, ...data };
+      const message = { action, data };
+      console.log(message, "this is the playload")
       wsRef.current.send(JSON.stringify(message));
       return true;
     }

@@ -10,14 +10,20 @@ import { Link, useNavigate } from "react-router-dom"
 export default function Rooms(){
     const {
         username, setUsername, connect, isConnected,
-        players, AddPlayerCards, IsHost
+        players, AddPlayerCards, IsHost, startGame
     } = useAppContext()
-
+    const [Test, setTest] = useState(["a","b","c","d"])
     const [Error, setError] = useState("")
     const [Count, setCount] = useState(null)
     const GotPlayers = useRef(false)
     const tempRoom = "testRoom"
+    const minPlayersRequired = 2
     const Navigate = useNavigate()
+    const temp = Test.filter(a => a !== "b")
+
+    const removeElement = () =>{
+        setTest(temp)
+    }
 
     function get_users(){
         console.log("ran get users function")
@@ -53,8 +59,6 @@ export default function Rooms(){
             get_users()
             GotPlayers.current = true
         } 
-        console.log("get users function run", players)
-    
     }, [players])
 
     useEffect(()=>{
@@ -74,12 +78,12 @@ export default function Rooms(){
             return
         }
 
-        if (players.length <= 3){
+        if (players.length <= minPlayersRequired){
             setError("need more then 3 players to start the game")
             return
         }
 
-        
+        startGame()
     }
 
 
@@ -111,6 +115,7 @@ export default function Rooms(){
             }}>
                 {Error}
             </div>
+            
         </div>
     )
 }
