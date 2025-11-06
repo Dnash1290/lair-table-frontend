@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom"
 
-
-
 export const messageHandlers = ({
-        setLogs, setPlayers, setVotes, setHints, setGameState, roomId
+        setLogs, setPlayers, setVotes, setHints, setGameState, roomId,
+        navigate, setCategory, setWord, setImposter
     }) => ({
 
     "player.join":(data) => {
@@ -16,16 +15,24 @@ export const messageHandlers = ({
         console.log( "player.left", data.client)
         setLogs(prev => [...prev, data.message])
         setPlayers(prev => prev.filter(a => a.username !== data.client))
-     
-        console.log(players[0].client, data.client)
-        // setPlayers(prev => [...prev, data])
-       
     },
+
     "game.starting":(data) =>{
-        const navigate = useNavigate()
-        setLogs(prev => [...prev, data])
+        console.log(data, "game.starting")        
         navigate(`/room/${roomId}`)
-        console.log(data, "game.starting")
+
+        setLogs(prev => [...prev, data])
+        setImposter(data.imposter)
+        setGameState(data.game_status)
+        setCategory(data.word.category)
+        setWord(data.word.word)
+        console.log("Setting category:", data.word.category)
+        console.log("Setting word:", data.word.word)
+    },
+
+    "game.investigating":(data) =>{
+        console.log("game.investgating")
+
     }
 
 })

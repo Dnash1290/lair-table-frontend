@@ -1,6 +1,7 @@
 // src/context/AppContext.jsx
 import { createContext, useState, useContext, useRef, useCallback, useEffect } from "react";
 import { messageHandlers } from "./handleMessage";
+import { useNavigate } from "react-router-dom";
 const AppContext = createContext();
 
 // Custom hook to use the context easily
@@ -14,14 +15,21 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
 
   // player 
   const [username, setUsername] = useState(null);
+  const [imposter, setImposter] = useState(null);
   
   // Game stateg
   const [players, setPlayers] = useState([]);
-  const [votes, setVotes] = useState({});
-  const [hints, setHints] = useState([]);
   const [gameState, setGameState] = useState(null);
+  const [category, setCategory] = useState(null)
+  const [word, setWord] = useState(null)
+  const [words, setWords] = useState(null)
+  const [hints, setHints] = useState([]);
+
+
+  const [votes, setVotes] = useState({});
   const [logs, setLogs] = useState([]);
   
+  const navigate = useNavigate()
   const wsRef = useRef(null);
   const reconnectTimeoutRef = useRef(null);
   const reconnectAttemptsRef = useRef(0);
@@ -30,7 +38,8 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
 
   const connect = useCallback((clientId, roomId)=>{
     const handles = messageHandlers({
-      setLogs, setPlayers, setVotes, setHints, setGameState, roomId
+      setLogs, setPlayers, setVotes, setHints, setGameState, roomId,
+      navigate, setCategory, setWord, setImposter
     })
     if (wsRef.current?.readyState == WebSocket.OPEN) {return}
     
@@ -110,6 +119,9 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     gameState,
     logs,
     username,
+    category,     // Add these three
+    word,         // values to the
+    imposter,     // context
     AddPlayerCards,
     setUsername,
     sendMessage,
@@ -117,7 +129,6 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     sendPlayerInfo,
     sendVote,
     sendHint,
-    //clearState,
     connect
   }
 

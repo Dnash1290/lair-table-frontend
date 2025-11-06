@@ -13,5 +13,5 @@ export default function CountDown({endTime}) {
     return () => clearInterval(interval);
   }, [endTime]);
 
-  return (<div>{secondsLeft} seconds left</div>)
+  return (<>{secondsLeft} </>)
 }

@@ -12,18 +12,12 @@ export default function Rooms(){
         username, setUsername, connect, isConnected,
         players, AddPlayerCards, IsHost, startGame
     } = useAppContext()
-    const [Test, setTest] = useState(["a","b","c","d"])
     const [Error, setError] = useState("")
     const [Count, setCount] = useState(null)
     const GotPlayers = useRef(false)
     const tempRoom = "testRoom"
     const minPlayersRequired = 2
-    const Navigate = useNavigate()
-    const temp = Test.filter(a => a !== "b")
 
-    const removeElement = () =>{
-        setTest(temp)
-    }
 
     function get_users(){
         console.log("ran get users function")
@@ -70,6 +64,8 @@ export default function Rooms(){
 
         return () => clearTimeout(errorTimer)
     },[Error])
+
+
 
     function start_game(){
         if (!players[0].IsHost) {
