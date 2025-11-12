@@ -20,6 +20,7 @@ export default function GameEngine(){
     const [role, setRole] = useState(null)
     const [heading, setHeading] = useState(null)
     const [colour, setColour] = useState(false)
+    const [timerTxt, setTimerTxt] =useState(null)
 
     useEffect(() => {
         if (username !== imposter) {
@@ -32,9 +33,18 @@ export default function GameEngine(){
     }, [imposter])
 
     useEffect(()=>{
-        if (gameState?.status === "game.investigating") {setHeading("Who is the liar ?")}
-        if (gameState?.status === "game.starting") {setHeading("Starting game")}
-        if (gameState?.status === "game.voting") {setHeading("Pick your vote")}
+        if (gameState?.status === "game.investigating") {
+            setHeading("Who is the liar ?")
+            setTimerTxt("give hint ....")
+        }
+        if (gameState?.status === "game.starting") {
+            setHeading("Starting game")
+            setTimerTxt("game starting..")
+        }
+        if (gameState?.status === "game.voting") {
+            setHeading("Pick your vote")
+            setTimerTxt("voting ends in.....")
+        }
 
         setHeading("Starting game")
 

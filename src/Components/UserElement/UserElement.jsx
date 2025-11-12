@@ -10,6 +10,7 @@ export default function UserElement({player}){
     const [isUserInvestigated, setIsUserInvestigated] = useState(false)
     const [state, setState] = useState(null)
     const [hint, setHint] = useState(null)
+    var prevInvestigation = null
 
     const handleClick = () => {
         sendVote(player.username)
@@ -40,13 +41,12 @@ export default function UserElement({player}){
         setIsInvestigated(false)
 
         if (investigating?.username !== player?.username){return} 
-//investigating?.username === username
+        //investigating?.username === username
         if ( investigating?.username === username){
             setIsUserInvestigated(true)
             console.log("user",investigating?.username, "===", player?.username, "investigating")
             return
         }
-
         setIsInvestigated(true)
 
     },[investigating])
@@ -76,7 +76,6 @@ export default function UserElement({player}){
             </div>
         </div>
         <div className="words-container">
-            {JSON.stringify(player?.words)}
             {player?.words?.map((word)=>(
                 <p>{word}</p>
             ))} 

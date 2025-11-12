@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 export const messageHandlers = ({
         setLogs, setPlayers, setVotes, setGameState, roomId,
-        navigate, setCategory, setWord, setImposter, setInvestigating
+        navigate, setCategory, setWord, setImposter, setInvestigating,
     }) => ({
 
     "player.join":(data) => {
@@ -34,6 +34,18 @@ export const messageHandlers = ({
         console.log("game.investigation", data)
         setInvestigating(data.investigating)
         setGameState(data.game_status)
+    },
+
+    "player.hint":(data) => {
+        setPlayers(prev =>{
+            const updateArray = [...prev]
+            const index = updateArray.findIndex(a => a.username === data.username)
+            if (index === -1) return
+
+            const { hint, ...cleanData } = data;
+            updateArray[index] = cleanData
+            return updateArray
+        })
     },
 
     "game.voting":(data) =>{
