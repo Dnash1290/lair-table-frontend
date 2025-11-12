@@ -14,3 +14,9 @@
     width: 85%;
     justify-content: space-between;
 }
+
+.game-ui .players-container{
+    display: flex;
+    margin-top: 32px;
+    gap: 16px;
+}

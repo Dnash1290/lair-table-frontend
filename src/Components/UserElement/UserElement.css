@@ -1,0 +1,103 @@
+.user-element {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--usercard-color-1);
+    height: 240px;
+    width: 600px;
+    max-width: 300px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: black 2px outset;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+
+    p {
+        margin: 0px;
+    }
+
+    .profile-container {
+        display: flex;
+
+        h2 {
+            margin-top: 6px;
+        }
+
+        .thinking{
+            opacity: 0;
+        }
+    }
+}
+
+/* --- Selected (scaled & animated border) --- */
+.user-element-selected {
+    transform: scale(1.1);
+
+    .profile-container .thinking{
+        opacity: 1;
+    }
+}
+
+.user-element-selected::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+
+    background: 
+        linear-gradient(90deg, white 50%, transparent 50%) 0 0 / 20px 3px repeat-x,  /* top */
+        linear-gradient(90deg, white 50%, transparent 50%) 0 0 / 20px 3px repeat-x, /* bottom */
+        linear-gradient(0deg, white 50%, transparent 50%) 0 0 / 3px 20px repeat-y,  /* left */
+        linear-gradient(0deg, white 50%, transparent 50%) 0 0 / 3px 20px repeat-y; /* right */
+    animation: border-move 2s linear infinite;
+    pointer-events: none; /* so it doesn't block clicks */
+}
+
+/* --- Keyframes for moving border around --- */
+@keyframes border-move {
+    0% {
+        background-position: 0 0, 0 100%, 0 0, 100% 0;
+    }
+    100% {
+        background-position: 20px 0, -20px 100%, 0 -20px, 100% 20px;
+    }
+}
+
+
+.user-element-turn{
+
+}
+
+/* --- Words container --- */
+.user-element .words-container {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        padding: 6px 12px;
+        border: black 2px outset;
+        border-radius: 8px;
+    }
+}
+
+/*    --------- Giving hints ----------- */
+
+.user-element .hint-input-container{
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+    input{  
+        padding: 6px 12px;
+        margin: 8px 12px;
+        height: 24px;
+        border: none;
+        border-radius: 8px;
+    }
+
+}

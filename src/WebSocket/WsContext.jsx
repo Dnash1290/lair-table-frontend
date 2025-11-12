@@ -20,9 +20,9 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   // Game stateg
   const [players, setPlayers] = useState([]);
   const [gameState, setGameState] = useState(null);
+  const [investigating, setInvestigating] = useState(null)
   const [category, setCategory] = useState(null)
   const [word, setWord] = useState(null)
-  const [words, setWords] = useState(null)
   const [hints, setHints] = useState([]);
 
 
@@ -39,7 +39,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   const connect = useCallback((clientId, roomId)=>{
     const handles = messageHandlers({
       setLogs, setPlayers, setVotes, setHints, setGameState, roomId,
-      navigate, setCategory, setWord, setImposter
+      navigate, setCategory, setWord, setImposter, setInvestigating
     })
     if (wsRef.current?.readyState == WebSocket.OPEN) {return}
     
@@ -107,7 +107,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
 
   const startGame = useCallback(() => sendMessage('game.start', {}), [sendMessage]);
   const sendPlayerInfo = useCallback((info) => sendMessage('player.info', info), [sendMessage]);
-  const sendVote = useCallback((votedFor) => sendMessage('player.vote', { voted_for: votedFor }), [sendMessage]);
+  const sendVote = useCallback((votedFor) => sendMessage('player.vote', { vote: votedFor }), [sendMessage]);
   const sendHint = useCallback((hint) => sendMessage('player.hint', { hint }), [sendMessage]);
 
   const values = {
@@ -123,6 +123,8 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     word,         // values to the
     imposter,     // context
     AddPlayerCards,
+    investigating,
+    setPlayers,
     setUsername,
     sendMessage,
     startGame,

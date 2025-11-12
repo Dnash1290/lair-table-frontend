@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 export const messageHandlers = ({
         setLogs, setPlayers, setVotes, setHints, setGameState, roomId,
-        navigate, setCategory, setWord, setImposter
+        navigate, setCategory, setWord, setImposter, setInvestigating
     }) => ({
 
     "player.join":(data) => {
@@ -30,9 +30,12 @@ export const messageHandlers = ({
         console.log("Setting word:", data.word.word)
     },
 
-    "game.investigating":(data) =>{
-        console.log("game.investgating")
-
+    "game.investigation":(data) =>{
+        console.log("game.investigation", data)
+        setInvestigating(data.investigating)
+        setGameState(data.game_status)
+    },
+    "game.voting":(data) =>{
+        // setGameState()
     }
-
 })
