@@ -59,6 +59,7 @@ export default function GameEngine(){
                     <p>Username: {username || "Loading..."}</p>
                 </div>
             </div>
+            {JSON.stringify(players)}
             <div className="players-container">
                 {players.map((player, index)=>(
                     <UserElement key={index} player={player}/>

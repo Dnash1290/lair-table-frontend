@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
 export const messageHandlers = ({
-        setLogs, setPlayers, setVotes, setHints, setGameState, roomId,
+        setLogs, setPlayers, setVotes, setGameState, roomId,
         navigate, setCategory, setWord, setImposter, setInvestigating
     }) => ({
 
@@ -35,6 +35,7 @@ export const messageHandlers = ({
         setInvestigating(data.investigating)
         setGameState(data.game_status)
     },
+
     "game.voting":(data) =>{
         // setGameState()
     }

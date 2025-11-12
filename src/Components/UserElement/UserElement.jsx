@@ -4,29 +4,49 @@ import { useAppContext } from "../../WebSocket/WsContext"
 import { useEffect, useState } from "react"
 
 export default function UserElement({player}){
-    const { investigating, gameState, sendVote, username} = useAppContext()
+    const { investigating, gameState, sendVote, username, 
+        sendHint, setPlayers} = useAppContext()
     const [isInvestigated, setIsInvestigated] = useState(false)
     const [isUserInvestigated, setIsUserInvestigated] = useState(false)
     const [state, setState] = useState(null)
+    const [hint, setHint] = useState(null)
 
-    const handleClick = () =>{
+    const handleClick = () => {
         sendVote(player.username)
         console.log("voted",player.username)
     }
 
+    const handleDownKey = (e) => {
+        if (e.key === "Enter") {
+            setIsUserInvestigated(false)
+            sendHint(hint)
+            setPlayers(prev => {
+                const updateArray = [...prev]
+                const index = updateArray.findIndex(a => a.username === player?.username)
+                if (index === -1){return}
+                // append the words list inside the player object
+                updateArray[index] = {...updateArray[index], 
+                    words: [...updateArray[index].words, hint]}
+
+                return updateArray
+            })
+        }
+    }
+
     // need to add when the user is been investigated
-    useEffect(() =>{    
+    useEffect(() =>{   
+        console.log("dsjl") 
         setIsUserInvestigated(false)
         setIsInvestigated(false)
 
         if (investigating?.username !== player?.username){return} 
-
-        if (investigating?.username === username){// testing
+//investigating?.username === username
+        if ( investigating?.username === username){
             setIsUserInvestigated(true)
             console.log("user",investigating?.username, "===", player?.username, "investigating")
             return
         }
-        
+
         setIsInvestigated(true)
 
     },[investigating])
@@ -52,16 +72,20 @@ export default function UserElement({player}){
             <img src={profileImg}/>
             <div>
                 <h2>{player?.username || "ifk"}</h2>
-                {state}
+                {state} 
             </div>
         </div>
         <div className="words-container">
-            <p>fdrgrwea</p>
-            <p>fdfdsfa</p>
-            <p>ftfwda</p>
+            {JSON.stringify(player?.words)}
+            {player?.words?.map((word)=>(
+                <p>{word}</p>
+            ))} 
         </div>
         <div className="hint-input-container">{isUserInvestigated ? 
-                <input placeholder="temp input"/> : ""
+                <input placeholder="temp input" 
+                    onKeyDown={handleDownKey} 
+                    onChange={(e)=>setHint(e.target.value)}/> :
+                ""
             }
             {isUserInvestigated}
         </div>
