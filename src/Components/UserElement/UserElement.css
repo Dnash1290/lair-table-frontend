@@ -27,6 +27,10 @@
         .thinking{
             opacity: 0;
         }
+
+        .voting div ,span{
+            margin: 4px 8px;
+        }
     }
 }
 

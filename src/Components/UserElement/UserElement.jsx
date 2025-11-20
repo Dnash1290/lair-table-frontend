@@ -10,7 +10,6 @@ export default function UserElement({player}){
     const [isUserInvestigated, setIsUserInvestigated] = useState(false)
     const [state, setState] = useState(null)
     const [hint, setHint] = useState(null)
-    var prevInvestigation = null
 
     const handleClick = () => {
         sendVote(player.username)
@@ -56,15 +55,15 @@ export default function UserElement({player}){
             setState(<div className="thinking">Thinking.....</div>)
             return
         }
-        if (gameState === "game.voting"){
+        if (gameState === "game.voting"){ // testing
             setState(
-                <div className="voting"><button onClick={handleClick}>Vote</button></div>
+                <div className="voting">
+                    <button onClick={handleClick}>Vote</button>
+                <span>{JSON.stringify(player) || "nigger"}</span>    
+                </div>
             )
         }
-
     },[gameState])
-
-
 
     return(
     <div className={`user-element ${isInvestigated ? "user-element-selected":""}`}>
@@ -72,7 +71,14 @@ export default function UserElement({player}){
             <img src={profileImg}/>
             <div>
                 <h2>{player?.username || "ifk"}</h2>
-                {state} 
+                {gameState === "game.investigating" ? (
+                    <div className="thinking">Thinking...</div>
+                ) : (
+                    <div className="voting">
+                        <button onClick={handleClick}>Vote</button>
+                    <span>{JSON.stringify(player?.votes?.length) || "nigger"}</span>    
+                    </div>
+                )}
             </div>
         </div>
         <div className="words-container">

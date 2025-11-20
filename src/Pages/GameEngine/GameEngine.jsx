@@ -6,21 +6,21 @@ import UserElement from "../../Components/UserElement/UserElement"
 
 
 const playload = [
-    {username:"low", IsHost:true, words:["a","b","c"]},
-    {username:"low2", IsHost:false, words:["a","b","c"]},
-    {username:"low3", IsHost:false, words:["a","b","c"]},
+    {username:"low", IsHost:true, words:["a","b","c"],votes:["a","b","c"]},
+    {username:"low2", IsHost:false, words:["a","b","c"],votes:["a","b","c"]},
+    {username:"low3", IsHost:false, words:["a","b","c"],votes:["a","b","c"]},
 ]
 
 export default function GameEngine(){
     //console.log(gameState)
     const {
-        players, vote, gameState, username, category, word, imposter
+        players, gameState, username, category, word, imposter
     } = useAppContext()
 
     const [role, setRole] = useState(null)
     const [heading, setHeading] = useState(null)
     const [colour, setColour] = useState(false)
-    const [timerTxt, setTimerTxt] =useState(null)
+    const [timerTxt, setTimerTxt] = useState("")
 
     useEffect(() => {
         if (username !== imposter) {
@@ -36,14 +36,17 @@ export default function GameEngine(){
         if (gameState?.status === "game.investigating") {
             setHeading("Who is the liar ?")
             setTimerTxt("give hint ....")
+            return
         }
         if (gameState?.status === "game.starting") {
             setHeading("Starting game")
             setTimerTxt("game starting..")
+            return
         }
-        if (gameState?.status === "game.voting") {
+        if (gameState?.status === "game.voting") {// testing
             setHeading("Pick your vote")
             setTimerTxt("voting ends in.....")
+            return
         }
 
         setHeading("Starting game")
@@ -54,7 +57,7 @@ export default function GameEngine(){
         <div className="game-ui">
             <h1>{heading || "Loading..."}</h1>
             {JSON.stringify(gameState)}
-            <p>voting ending in <CountDown endTime={gameState?.end_time} /></p>
+            <p>{timerTxt} <CountDown endTime={gameState?.end_time} /></p>
             <div className="game-details-container">
                 <div className="game-details-left">
                     <h3>Role:

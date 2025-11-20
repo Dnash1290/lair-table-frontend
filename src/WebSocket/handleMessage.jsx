@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
 export const messageHandlers = ({
-        setLogs, setPlayers, setVotes, setGameState, roomId,
+        setLogs, setPlayers, setVoters, setGameState, roomId,
         navigate, setCategory, setWord, setImposter, setInvestigating,
     }) => ({
 
@@ -49,6 +49,52 @@ export const messageHandlers = ({
     },
 
     "game.voting":(data) =>{
-        // setGameState()
+        setGameState(data.game_status)
+    },
+
+    "player.vote":(data) => {
+        console.log("recived vote")
+
+        setVoters(prev => {
+        const updated = [...prev];
+        const index = updated.findIndex(a => a.voter === data.voter);
+
+        if (index !== -1) {
+            // voter already voted → update their vote
+            updated[index] = { voter: data.voter, vote: data.vote };
+            console.log("updating vote")
+            return updated;
+        }
+        
+        console.log("adding vote")
+        // first time voting
+        return [...prev, { voter: data.voter, vote: data.vote }];
+        });
+
+
+    setPlayers(prev => {
+    return prev.map(player => {
+        // ensure votes[] always exists
+        const currentVotes = player.votes || [];
+
+        let newVotes = currentVotes;
+
+        // remove old vote if this voter previously voted for this player
+        if (currentVotes.includes(data.voter)) {
+        newVotes = currentVotes.filter(v => v !== data.voter);
+        }
+
+        // add new vote if this is who the voter chose
+        if (player.username === data.vote) {
+        newVotes = [...newVotes, data.voter];
+        }
+
+        return {
+        ...player,
+        votes: newVotes
+        };
+    });
+    });
+
     }
 })

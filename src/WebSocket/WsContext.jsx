@@ -24,7 +24,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   const [category, setCategory] = useState(null)
   const [word, setWord] = useState(null)
 
-  const [votes, setVotes] = useState({});
+  const [voters, setVoters] = useState([{voter:null, vote:null}]);
   const [logs, setLogs] = useState([]);
   
   const navigate = useNavigate()
@@ -36,7 +36,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
 
   const connect = useCallback((clientId, roomId)=>{
     const handles = messageHandlers({
-      setLogs, setPlayers, setVotes, setGameState, roomId,
+      setLogs, setPlayers, setVoters, setGameState, roomId,
       navigate, setCategory, setWord, setImposter, setInvestigating,
     })
     if (wsRef.current?.readyState == WebSocket.OPEN) {return}
@@ -112,7 +112,6 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     isConnected,
     connectionError,
     players,
-    votes,
     gameState,
     logs,
     username,
