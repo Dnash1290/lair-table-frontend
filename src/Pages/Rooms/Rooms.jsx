@@ -23,7 +23,7 @@ export default function Rooms(){
 
     function get_users(){
         console.log("ran get users function")
-        axios.get(`http://${import.meta.env.VITE_WS_URL}/conn_router/get_users`)
+        axios.get(`https://${import.meta.env.VITE_WS_URL}/conn_router/get_users`)
         .then((data)=>{
             console.log(data)
             AddPlayerCards(data.data)
