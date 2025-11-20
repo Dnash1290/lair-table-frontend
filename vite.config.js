@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       'love-electron-launched-kong.trycloudflare.com',
-      'https://lairtablebackend.onrender.com'
+      'lair-table-frontend.onrender.com'
     ]}
 
 })
