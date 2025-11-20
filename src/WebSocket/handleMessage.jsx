@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 export const messageHandlers = ({
         setLogs, setPlayers, setVoters, setGameState, roomId,
         navigate, setCategory, setWord, setImposter, setInvestigating,
+        setVoteResult
     }) => ({
 
     "player.join":(data) => {
@@ -95,6 +96,10 @@ export const messageHandlers = ({
         };
     });
     });
+    },
 
-    }
+    "game.vote_results":(data) =>{
+        console.log(data)
+        setVoteResult(data)
+    } 
 })

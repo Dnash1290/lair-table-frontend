@@ -7,7 +7,7 @@ const AppContext = createContext();
 // Custom hook to use the context easily
 export const useAppContext = () => useContext(AppContext);
 
-export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router' }) => {
+export const AppProvider = ({ children, wsUrl = `ws://${import.meta.env.VITE_WS_URL}/conn_router`}) => {
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
 
@@ -24,6 +24,8 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
   const [category, setCategory] = useState(null)
   const [word, setWord] = useState(null)
 
+  //votes
+  const [voteResult, setVoteResult] = useState()
   const [voters, setVoters] = useState([{voter:null, vote:null}]);
   const [logs, setLogs] = useState([]);
   
@@ -38,6 +40,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     const handles = messageHandlers({
       setLogs, setPlayers, setVoters, setGameState, roomId,
       navigate, setCategory, setWord, setImposter, setInvestigating,
+      setVoteResult
     })
     if (wsRef.current?.readyState == WebSocket.OPEN) {return}
     
@@ -120,6 +123,7 @@ export const AppProvider = ({ children, wsUrl = 'ws://127.0.0.1:8000/conn_router
     imposter,     // context
     AddPlayerCards,
     investigating,
+    voteResult,
     setPlayers,
     setUsername,
     sendMessage,

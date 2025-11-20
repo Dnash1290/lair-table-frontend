@@ -8,6 +8,8 @@ import { useAppContext } from "../../WebSocket/WsContext"
 import { Link, useNavigate } from "react-router-dom"
 
 export default function Rooms(){
+
+
     const {
         username, setUsername, connect, isConnected,
         players, AddPlayerCards, IsHost, startGame
@@ -21,7 +23,7 @@ export default function Rooms(){
 
     function get_users(){
         console.log("ran get users function")
-        axios.get("http://127.0.0.1:8000/conn_router/get_users")
+        axios.get(`http://${import.meta.env.VITE_WS_URL}/conn_router/get_users`)
         .then((data)=>{
             console.log(data)
             AddPlayerCards(data.data)

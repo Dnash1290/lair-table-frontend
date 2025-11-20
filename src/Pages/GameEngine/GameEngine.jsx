@@ -14,7 +14,8 @@ const playload = [
 export default function GameEngine(){
     //console.log(gameState)
     const {
-        players, gameState, username, category, word, imposter
+        players, gameState, username, category, word, imposter,
+        voteResult
     } = useAppContext()
 
     const [role, setRole] = useState(null)
@@ -56,7 +57,6 @@ export default function GameEngine(){
     return(
         <div className="game-ui">
             <h1>{heading || "Loading..."}</h1>
-            {JSON.stringify(gameState)}
             <p>{timerTxt} <CountDown endTime={gameState?.end_time} /></p>
             <div className="game-details-container">
                 <div className="game-details-left">
@@ -72,7 +72,11 @@ export default function GameEngine(){
                     <p>Username: {username || "Loading..."}</p>
                 </div>
             </div>
-            {JSON.stringify(players)}
+            <h2>{voteResult ? voteResult?.voted_client : "vf"}</h2>
+            <p>{voteResult ? 
+                voteResult?.is_imposter ? "imposter":"not imposter" 
+                : "vf"}
+            </p>
             <div className="players-container">
                 {players.map((player, index)=>(
                     <UserElement key={index} player={player}/>
