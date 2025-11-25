@@ -8,7 +8,6 @@ export default function UserElement({player}){
         sendHint, setPlayers} = useAppContext()
     const [isInvestigated, setIsInvestigated] = useState(false)
     const [isUserInvestigated, setIsUserInvestigated] = useState(false)
-    const [state, setState] = useState(null)
     const [hint, setHint] = useState(null)
 
     const handleClick = () => {
@@ -50,20 +49,6 @@ export default function UserElement({player}){
 
     },[investigating])
 
-    useEffect(()=>{
-        if (gameState === "game.investigating"){
-            setState(<div className="thinking">Thinking.....</div>)
-            return
-        }
-        if (gameState === "game.voting"){ // testing
-            setState(
-                <div className="voting">
-                    <button onClick={handleClick}>Vote</button>
-                <span>{JSON.stringify(player) || "nigger"}</span>    
-                </div>
-            )
-        }
-    },[gameState])
 
     return(
     <div className={`user-element ${isInvestigated ? "user-element-selected":""}`}>
@@ -71,12 +56,12 @@ export default function UserElement({player}){
             <img src={profileImg}/>
             <div>
                 <h2>{player?.username || "ifk"}</h2>
-                {gameState === "game.investigating" ? (
+                {gameState?.status === "game.investigating" ? (
                     <div className="thinking">Thinking...</div>
                 ) : (
                     <div className="voting">
                         <button onClick={handleClick}>Vote</button>
-                    <span>{JSON.stringify(player?.votes?.length) || "nigger"}</span>    
+                    <span>{JSON.stringify(player?.votes?.length) || "balls"}</span>    
                     </div>
                 )}
             </div>

@@ -7,7 +7,7 @@ const AppContext = createContext();
 // Custom hook to use the context easily
 export const useAppContext = () => useContext(AppContext);
 
-export const AppProvider = ({ children, wsUrl = `wss://${import.meta.env.VITE_WS_URL}/conn_router`}) => {
+export const AppProvider = ({ children, wsUrl = `ws://${import.meta.env.VITE_WS_URL}/conn_router`}) => {
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
 
@@ -72,6 +72,7 @@ export const AppProvider = ({ children, wsUrl = `wss://${import.meta.env.VITE_WS
 
       ws.onclose = (event) => {
         console.log("WebSocket closed:", event.code, event.reason);
+        console.log("if in production use wss")
         setIsConnected(false);
       };
 
